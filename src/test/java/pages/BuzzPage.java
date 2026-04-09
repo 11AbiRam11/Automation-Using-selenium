@@ -3,22 +3,41 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import java.time.Duration;
 
-public class BuzzPage {
-    private WebDriver driver;
-    private WebDriverWait wait;
+public class BuzzPage extends BasePage {
 
-    private By header = By.tagName("h6");
-    private By postInput = By.xpath("//textarea[@class='oxd-buzz-post-input']");
+    // Page Header
+    private By buzzHeader = By.xpath("//h6[normalize-space()='Buzz']");
+
+    // Post Input
+    private By postInput = By.xpath("//textarea[contains(@class,'oxd-buzz-post-input')]");
+
+    // Post Button
+    private By postButton = By.xpath("//button[@type='submit']");
 
     public BuzzPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        super(driver);
+
+        // Ensure Buzz page is loaded
+        wait.until(ExpectedConditions.visibilityOfElementLocated(buzzHeader));
+        wait.until(ExpectedConditions.urlContains("buzz"));
     }
 
-    public String getPageHeader() {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(header)).getText();
+    public String getHeaderText() {
+        return driver.findElement(buzzHeader).getText();
+    }
+
+    public void createPost(String message) {
+
+        waitForLoading();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(postInput)).clear();
+
+        driver.findElement(postInput).sendKeys(message);
+
+        wait.until(ExpectedConditions.elementToBeClickable(postButton)).click();
+
+        waitForLoading();
     }
 }

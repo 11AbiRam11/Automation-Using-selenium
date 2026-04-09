@@ -30,12 +30,14 @@ public class LoginTest extends BaseClass {
     @Test(dataProvider = "loginData")
     public void testDataDrivenLogin(String username, String password, String status) {
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(username, password);
 
         if (status.equalsIgnoreCase("Valid")) {
-            DashboardPage dashboardPage = new DashboardPage(driver);
+            DashboardPage dashboardPage = loginPage.login(username, password);
             Assert.assertEquals(dashboardPage.getHeaderText(), "Dashboard", "Login should have been successful");
         } else {
+            loginPage.enterUsername(username);
+            loginPage.enterPassword(password);
+            loginPage.clickLogin();
             String errorMsg = loginPage.getErrorMessage();
             Assert.assertEquals(errorMsg, "Invalid credentials", "Error message did not match");
         }
@@ -53,7 +55,9 @@ public class LoginTest extends BaseClass {
     @Test
     public void testInvalidLogin() {
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.login("Invalid", "invalid");
+        loginPage.enterUsername("Invalid");
+        loginPage.enterPassword("invalid");
+        loginPage.clickLogin();
         
         String errorMsg = loginPage.getErrorMessage();
         Assert.assertEquals(errorMsg, "Invalid credentials", "Invalid login should show proper error message");

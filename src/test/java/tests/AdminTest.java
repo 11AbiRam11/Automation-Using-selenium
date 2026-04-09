@@ -15,11 +15,11 @@ public class AdminTest extends BaseClass {
         DashboardPage dashboardPage = loginPage.login("Admin", "admin123");
         
         AdminPage adminPage = dashboardPage.clickAdmin();
-        Assert.assertEquals(adminPage.getPageHeader(), "Admin", "Admin page header is incorrect");
+        Assert.assertEquals(adminPage.getHeaderText(), "Admin", "Admin page header is incorrect");
         
         adminPage.searchUserByUsername("Admin");
         String resultText = adminPage.getRecordsFoundText();
-        Assert.assertTrue(resultText.contains("Record Found"), "No records found for Admin user");
+        Assert.assertTrue(resultText.contains("Record Found") || resultText.contains("Records Found"), "No records found for Admin user");
     }
 
     @Test(description = "Verify navigation to Add User screen")
@@ -30,7 +30,6 @@ public class AdminTest extends BaseClass {
         AdminPage adminPage = dashboardPage.clickAdmin();
         adminPage.clickAddUser();
         
-        // Asserting part of the header or a unique element on Add User page
         Assert.assertTrue(driver.getPageSource().contains("Add User"), "Did not navigate to Add User page");
     }
 }

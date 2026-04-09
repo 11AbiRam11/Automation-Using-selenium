@@ -3,6 +3,7 @@ C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\base\ExcelUti
 C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\base\ExtentManager.java
 C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\base\Listeners.java
 C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\pages\AdminPage.java
+C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\pages\BasePage.java
 C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\pages\BuzzPage.java
 C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\pages\ClaimPage.java
 C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\pages\DashboardPage.java
@@ -15,9 +16,15 @@ C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\pages\PIMPage
 C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\pages\RecruitmentPage.java
 C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\pages\TimePage.java
 C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\tests\AdminTest.java
+C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\tests\BuzzTest.java
+C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\tests\ClaimTest.java
 C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\tests\DashboardTest.java
+C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\tests\DirectoryTest.java
 C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\tests\EndToEndTest.java
 C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\tests\LeaveTest.java
 C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\tests\LoginTest.java
+C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\tests\MyInfoTest.java
+C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\tests\PerformanceTest.java
 C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\tests\PIMTest.java
+C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\tests\RecruitmentTest.java
 C:\Users\mvana\eclipse-workspace\selenium_and_testNG\src\test\java\tests\TimeTest.java

@@ -3,28 +3,34 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import java.time.Duration;
 
-public class LeavePage {
-    private WebDriver driver;
-    private WebDriverWait wait;
+public class LeavePage extends BasePage {
 
-    private By header = By.tagName("h6");
-    private By fromDate = By.xpath("(//input[@placeholder='yyyy-dd-mm'])[1]");
-    private By searchButton = By.xpath("//button[@type='submit']");
-    private By leaveTypeDropdown = By.xpath("(//div[@class='oxd-select-text-input'])[1]");
+    // Page Header
+    private By leaveHeader = By.xpath("//h6[normalize-space()='Leave']");
+
+    // Search Button (more stable)
+    private By searchButton = By.xpath("//button[normalize-space()='Search']");
 
     public LeavePage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        super(driver);
+
+        // Ensure Leave page is loaded
+        wait.until(ExpectedConditions.visibilityOfElementLocated(leaveHeader));
+        wait.until(ExpectedConditions.urlContains("leave"));
     }
 
-    public String getPageHeader() {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(header)).getText();
+    public String getHeaderText() {
+        return driver.findElement(leaveHeader).getText();
     }
 
     public void clickSearch() {
+
+        waitForLoading();
+
         wait.until(ExpectedConditions.elementToBeClickable(searchButton)).click();
+
+        waitForLoading();
     }
 }

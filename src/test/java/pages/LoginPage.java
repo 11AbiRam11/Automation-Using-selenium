@@ -1,42 +1,45 @@
+
 package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class LoginPage {
-    private WebDriver driver;
+public class LoginPage extends BasePage {
 
-    // Locators
     private By usernameInput = By.name("username");
     private By passwordInput = By.name("password");
     private By loginButton = By.xpath("//button[@type='submit']");
-
-    private By errorMessage = By.xpath("//div[@class='oxd-alert-content oxd-alert-content--error']/p");
+    private By errorMessage = By.xpath("//p[contains(@class,'oxd-alert-content-text')]");
 
     public LoginPage(WebDriver driver) {
-        this.driver = driver;
-    }
-
-    public String getErrorMessage() {
-        return driver.findElement(errorMessage).getText();
+        super(driver);
     }
 
     public void enterUsername(String username) {
-        driver.findElement(usernameInput).sendKeys(username);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(usernameInput)).sendKeys(username);
     }
 
     public void enterPassword(String password) {
-        driver.findElement(passwordInput).sendKeys(password);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(passwordInput)).sendKeys(password);
     }
 
     public void clickLogin() {
-        driver.findElement(loginButton).click();
+        wait.until(ExpectedConditions.elementToBeClickable(loginButton)).click();
+    }
+
+    public String getErrorMessage() {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessage)).getText();
     }
 
     public DashboardPage login(String username, String password) {
+
         enterUsername(username);
         enterPassword(password);
         clickLogin();
+
+        wait.until(ExpectedConditions.urlContains("dashboard"));
+
         return new DashboardPage(driver);
     }
 }

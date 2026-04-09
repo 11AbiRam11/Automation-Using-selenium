@@ -3,45 +3,72 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
+public class PIMPage extends BasePage {
 
-public class PIMPage {
-    private WebDriver driver;
-    private WebDriverWait wait;
+    // Page Header
+    private By pimHeader = By.xpath("//h6[normalize-space()='PIM']");
 
-    // Locators
-    private By employeeNameInput = By.xpath("(//input[@placeholder='Type for hints...'])[1]");
+    // Search Employee
+    private By employeeNameInput =
+            By.xpath("//label[normalize-space()='Employee Name']/ancestor::div[contains(@class,'oxd-input-group')]//input");
+
     private By searchButton = By.xpath("//button[@type='submit']");
+
+    // Add Employee
     private By addButton = By.xpath("//button[normalize-space()='Add']");
+
     private By firstNameInput = By.name("firstName");
     private By lastNameInput = By.name("lastName");
+
     private By saveButton = By.xpath("//button[@type='submit']");
-    private By successToast = By.xpath("//div[@id='oxd-toaster_1']");
 
     public PIMPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        super(driver);
+
+        // Ensure PIM page is loaded
+        wait.until(ExpectedConditions.visibilityOfElementLocated(pimHeader));
+        wait.until(ExpectedConditions.urlContains("pim"));
+    }
+
+    public String getHeaderText() {
+        return driver.findElement(pimHeader).getText();
     }
 
     public void searchEmployeeByName(String name) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(employeeNameInput)).sendKeys(name);
-        driver.findElement(searchButton).click();
+
+        waitForLoading();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(employeeNameInput)).clear();
+
+        driver.findElement(employeeNameInput).sendKeys(name);
+
+        wait.until(ExpectedConditions.elementToBeClickable(searchButton)).click();
+
+        waitForLoading();
     }
 
     public void clickAddEmployee() {
+
+        waitForLoading();
+
         wait.until(ExpectedConditions.elementToBeClickable(addButton)).click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(firstNameInput));
     }
 
     public void addNewEmployee(String firstName, String lastName) {
-        clickAddEmployee();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(firstNameInput)).sendKeys(firstName);
-        driver.findElement(lastNameInput).sendKeys(lastName);
-        driver.findElement(saveButton).click();
-    }
 
-    public String getPageHeader() {
-        return driver.findElement(By.tagName("h6")).getText();
+        clickAddEmployee();
+
+        driver.findElement(firstNameInput).sendKeys(firstName);
+
+        driver.findElement(lastNameInput).sendKeys(lastName);
+
+        wait.until(ExpectedConditions.elementToBeClickable(saveButton)).click();
+
+        // Wait until personal details page loads
+        wait.until(ExpectedConditions.urlContains("viewPersonalDetails"));
     }
 }

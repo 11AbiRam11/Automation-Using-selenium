@@ -1,47 +1,96 @@
+//package pages;
+//
+//import org.openqa.selenium.By;
+//import org.openqa.selenium.WebDriver;
+//import org.openqa.selenium.support.ui.ExpectedConditions;
+//
+//public class AdminPage extends BasePage {
+//
+//    // Locators
+//    private By usernameSearchInput = By.xpath("//label[text()='Username']/parent::div/following-sibling::div/input");
+//    private By searchButton = By.xpath("//button[@type='submit']");
+//    private By addButton = By.xpath("//button[normalize-space()='Add']");
+//    private By recordsCount = By.xpath("//div[@class='orangehrm-horizontal-padding orangehrm-vertical-padding']/span");
+//
+//    public AdminPage(WebDriver driver) {
+//        super(driver);
+//    }
+//
+//    public void searchUserByUsername(String username) {
+//        waitForLoading();
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(usernameSearchInput)).clear();
+//        driver.findElement(usernameSearchInput).sendKeys(username);
+//        driver.findElement(searchButton).click();
+//        waitForLoading();
+//    }
+//
+//    public String getRecordsFoundText() {
+//        waitForLoading();
+//        // Wait for the specific text indicating records (e.g., "(1) Record Found" or "No Records Found")
+//        return wait.until(ExpectedConditions.visibilityOfElementLocated(recordsCount)).getText();
+//    }
+//
+//    public void clickAddUser() {
+//        waitForLoading();
+//        wait.until(ExpectedConditions.elementToBeClickable(addButton)).click();
+//    }
+//}
+
+
 package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
+public class AdminPage extends BasePage {
 
-public class AdminPage {
-    private WebDriver driver;
-    private WebDriverWait wait;
+    private By adminHeader = By.xpath("//h6[text()='Admin']");
+    private By usernameSearchInput =
+            By.xpath("//label[text()='Username']/../following-sibling::div/input");
 
-    // Locators
-    private By header = By.tagName("h6");
-    private By usernameSearchInput = By.xpath("(//input[@class='oxd-input oxd-input--active'])[2]");
     private By searchButton = By.xpath("//button[@type='submit']");
     private By addButton = By.xpath("//button[normalize-space()='Add']");
-    private By userRoleDropdown = By.xpath("(//div[@class='oxd-select-text oxd-select-text--active'])[1]");
-    private By employeeNameInput = By.xpath("//input[@placeholder='Type for hints...']");
-    private By statusDropdown = By.xpath("(//div[@class='oxd-select-text oxd-select-text--active'])[2]");
-    private By saveButton = By.xpath("//button[@type='submit']");
-    private By recordsCount = By.xpath("//span[@class='oxd-text oxd-text--span']");
+    private By recordsCount =
+            By.xpath("//span[contains(text(),'Record')]");
 
     public AdminPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        super(driver);
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(adminHeader));
+        wait.until(ExpectedConditions.urlContains("admin"));
     }
 
-    public String getPageHeader() {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(header)).getText();
+    public String getHeaderText() {
+        return driver.findElement(adminHeader).getText();
     }
 
     public void searchUserByUsername(String username) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(usernameSearchInput)).sendKeys(username);
+
+        waitForLoading();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(usernameSearchInput)).clear();
+        driver.findElement(usernameSearchInput).sendKeys(username);
+
         driver.findElement(searchButton).click();
+
+        waitForLoading();
     }
 
     public String getRecordsFoundText() {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(recordsCount)).getText();
+
+        waitForLoading();
+
+        return wait.until(
+                ExpectedConditions.visibilityOfElementLocated(recordsCount)
+        ).getText();
     }
 
     public void clickAddUser() {
+
+        waitForLoading();
+
         wait.until(ExpectedConditions.elementToBeClickable(addButton)).click();
     }
 }

@@ -1,98 +1,152 @@
 package pages;
 
-import base.BaseClass;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import java.time.Duration;
+import java.util.List;
 
-public class DashboardPage {
-    private WebDriver driver;
-    private WebDriverWait wait;
+public class DashboardPage extends BasePage {
 
-    private By header = By.tagName("h6");
-    private By sideMenuItems = By.className("oxd-main-menu-item");
-    private By dashboardWidgets = By.className("orangehrm-dashboard-widget-name");
+    // ================= HEADER =================
+    private By dashboardHeader = By.xpath("//h6[normalize-space()='Dashboard']");
 
+    // ================= SIDE MENU =================
+    private By sideMenuLinks = By.xpath("//ul[@class='oxd-main-menu']/li");
+
+    // ================= WIDGETS =================
+    private By widgetTitles = By.xpath("//h6");
+
+    // ================= MENU =================
+    private By adminMenu = By.xpath("//span[normalize-space()='Admin']");
+    private By pimMenu = By.xpath("//span[normalize-space()='PIM']");
+    private By leaveMenu = By.xpath("//span[normalize-space()='Leave']");
+    private By timeMenu = By.xpath("//span[normalize-space()='Time']");
+    private By recruitmentMenu = By.xpath("//span[normalize-space()='Recruitment']");
+    private By myInfoMenu = By.xpath("//span[normalize-space()='My Info']");
+    private By performanceMenu = By.xpath("//span[normalize-space()='Performance']");
+    private By directoryMenu = By.xpath("//span[normalize-space()='Directory']");
+    private By claimMenu = By.xpath("//span[normalize-space()='Claim']");
+    private By buzzMenu = By.xpath("//span[normalize-space()='Buzz']");
+    private By dashboardMenu = By.xpath("//span[normalize-space()='Dashboard']");
+
+    // ================= CONSTRUCTOR =================
     public DashboardPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        super(driver);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(dashboardHeader));
+        wait.until(ExpectedConditions.urlContains("dashboard"));
     }
 
-    private void clickSidebarLink(String linkText) {
-        By locator = By.xpath("//span[text()='" + linkText + "']/parent::a");
-        
-        // Correctly use BaseClass to wait for spinner
-        BaseClass base = new BaseClass();
-        base.driver = this.driver;
-        base.waitForLoading();
-        
-        wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
-    }
-
-    public int getSideMenuCount() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(sideMenuItems));
-        return driver.findElements(sideMenuItems).size();
-    }
-
-    public boolean isWidgetDisplayed(String widgetName) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(dashboardWidgets));
-        return driver.findElements(dashboardWidgets).stream()
-                .anyMatch(w -> w.getText().contains(widgetName));
-    }
-
+    // ================= HEADER =================
     public String getHeaderText() {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(header)).getText();
+        waitForLoading();
+        return driver.findElement(dashboardHeader).getText().trim();
     }
 
-    public AdminPage clickAdmin() {
-        clickSidebarLink("Admin");
+    // ================= SIDE MENU =================
+    public int getSideMenuCount() {
+        waitForLoading();
+        List<WebElement> menus = wait.until(
+                ExpectedConditions.visibilityOfAllElementsLocatedBy(sideMenuLinks)
+        );
+        return menus.size();
+    }
+
+    // ================= WIDGET CHECK =================
+    public boolean isWidgetDisplayed(String widgetName) {
+
+        waitForLoading();
+
+        List<WebElement> widgets = driver.findElements(widgetTitles);
+
+        for (WebElement widget : widgets) {
+            if (widget.getText().trim().equalsIgnoreCase(widgetName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // ================= NAVIGATION =================
+
+    public DashboardPage goToDashboard() {
+        waitForLoading();
+        click(dashboardMenu);
+        return this;
+    }
+
+    public AdminPage goToAdmin() {
+        waitForLoading();
+        click(adminMenu);
         return new AdminPage(driver);
     }
 
-    public PIMPage clickPIM() {
-        clickSidebarLink("PIM");
+    public PIMPage goToPIM() {
+        waitForLoading();
+        click(pimMenu);
         return new PIMPage(driver);
     }
 
-    public LeavePage clickLeave() {
-        clickSidebarLink("Leave");
+    public LeavePage goToLeave() {
+        waitForLoading();
+        click(leaveMenu);
         return new LeavePage(driver);
     }
 
-    public TimePage clickTime() {
-        clickSidebarLink("Time");
+    public TimePage goToTime() {
+        waitForLoading();
+        click(timeMenu);
         return new TimePage(driver);
     }
 
-    public RecruitmentPage clickRecruitment() {
-        clickSidebarLink("Recruitment");
+    public RecruitmentPage goToRecruitment() {
+        waitForLoading();
+        click(recruitmentMenu);
         return new RecruitmentPage(driver);
     }
 
-    public MyInfoPage clickMyInfo() {
-        clickSidebarLink("My Info");
+    public MyInfoPage goToMyInfo() {
+        waitForLoading();
+        click(myInfoMenu);
         return new MyInfoPage(driver);
     }
 
-    public PerformancePage clickPerformance() {
-        clickSidebarLink("Performance");
+    public PerformancePage goToPerformance() {
+        waitForLoading();
+        click(performanceMenu);
         return new PerformancePage(driver);
     }
 
-    public DirectoryPage clickDirectory() {
-        clickSidebarLink("Directory");
+    public DirectoryPage goToDirectory() {
+        waitForLoading();
+        click(directoryMenu);
         return new DirectoryPage(driver);
     }
 
-    public ClaimPage clickClaim() {
-        clickSidebarLink("Claim");
+    public ClaimPage goToClaim() {
+        waitForLoading();
+        click(claimMenu);
         return new ClaimPage(driver);
     }
 
-    public BuzzPage clickBuzz() {
-        clickSidebarLink("Buzz");
+    public BuzzPage goToBuzz() {
+        waitForLoading();
+        click(buzzMenu);
         return new BuzzPage(driver);
     }
+
+    // ================= ALIASES =================
+
+    public DashboardPage clickDashboard() { return goToDashboard(); }
+    public AdminPage clickAdmin() { return goToAdmin(); }
+    public PIMPage clickPIM() { return goToPIM(); }
+    public LeavePage clickLeave() { return goToLeave(); }
+    public TimePage clickTime() { return goToTime(); }
+    public RecruitmentPage clickRecruitment() { return goToRecruitment(); }
+    public MyInfoPage clickMyInfo() { return goToMyInfo(); }
+    public PerformancePage clickPerformance() { return goToPerformance(); }
+    public DirectoryPage clickDirectory() { return goToDirectory(); }
+    public ClaimPage clickClaim() { return goToClaim(); }
+    public BuzzPage clickBuzz() { return goToBuzz(); }
 }

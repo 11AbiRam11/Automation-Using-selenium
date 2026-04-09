@@ -1,125 +1,144 @@
-# OrangeHRM Automation Suite
+# OrangeHRM Enterprise Automation Framework
 
-A robust, enterprise-grade automated testing framework for the [OrangeHRM Open Source](https://opensource-demo.orangehrmlive.com/) platform. This project leverages the Page Object Model (POM) design pattern with Selenium WebDriver, Java, and TestNG to ensure comprehensive test coverage and maintainability.
+A professional-grade test automation framework designed for the OrangeHRM Open Source platform. This framework implements the Page Object Model (POM) design pattern using Java, Selenium WebDriver, and TestNG, providing a scalable and maintainable solution for regression and end-to-end testing.
 
----
+## Overview
 
-## Tech Stack and Dependencies
+This project provides a robust automation suite covering critical modules of the OrangeHRM application, including Admin, PIM, Leave, Time, Recruitment, My Info, Performance, Directory, Claim, and Buzz. It is built with a focus on reliability, clear reporting, and cross-browser compatibility.
 
-- **Programming Language:** Java 11
-- **Testing Framework:** TestNG 7.9.0
-- **Automation Tool:** Selenium WebDriver 4.19.1
+## Core Features
+
+- **Page Object Model (POM):** Enhances code reusability and minimizes maintenance efforts by separating UI elements from test logic.
+- **Advanced Reporting:** Integrated with ExtentReports 5 (Spark) for detailed, interactive HTML reports including system environment details and execution logs.
+- **Automated Evidence Collection:** Captures high-resolution screenshots automatically upon test failure, embedded directly into the Extent Report.
+- **Data-Driven Testing:** Utilizes Apache POI for externalizing test data into Excel spreadsheets, enabling exhaustive testing with multiple datasets.
+- **Cross-Browser Compatibility:** Support for Chrome, Firefox, and Microsoft Edge with configurable execution via TestNG parameters.
+- **Headless Execution:** Fully supported for CI/CD environments (Jenkins/GitHub Actions) via Chrome, Firefox, and Edge headless modes.
+- **Thread-Safe Execution:** Implements ThreadLocal for ExtentTest instances to ensure reporting integrity during parallel execution.
+- **Wait Strategies:** Combines Implicit and Explicit (WebDriverWait) strategies to handle asynchronous web elements effectively.
+
+## Technology Stack
+
+- **Language:** Java 11 (LTS)
+- **Automation:** Selenium WebDriver 4.25.0
+- **Test Management:** TestNG 7.9.0
+- **Reporting:** ExtentReports 5.1.1 (Spark Reporter)
+- **Build Tool:** Apache Maven
 - **Driver Management:** WebDriverManager 5.7.0
-- **Build Tool:** Maven
-- **Logging:** SLF4J (SimpleLogger)
-
----
+- **Data Handling:** Apache POI 5.2.5
+- **Logging:** SLF4J and Log4j 2
 
 ## Project Architecture
-
-The framework follows the Page Object Model (POM) pattern to separate the UI actions from the test logic, enhancing code reusability and simplifying maintenance.
 
 ```text
 src/test/java/
 ├── base/
-│   └── BaseClass.java          # Setup and teardown for WebDriver (Chrome/Firefox)
-├── pages/                      # Page Object Classes
+│   ├── BaseClass.java          # WebDriver initialization and lifecycle management
+│   ├── ExcelUtils.java         # Utilities for Excel data-driven testing
+│   ├── ExtentManager.java      # Configuration for ExtentReports 5
+│   └── Listeners.java          # TestNG Listeners for reporting and screenshots
+├── pages/                      # Page Object Classes (UI Locators & Actions)
 │   ├── AdminPage.java
-│   ├── DashboardPage.java
-│   ├── LeavePage.java
 │   ├── LoginPage.java
 │   ├── PIMPage.java
-│   └── TimePage.java
+│   └── ... (Module-specific pages)
 └── tests/                      # Test Implementation Classes
-    ├── AdminTest.java
-    ├── DashboardTest.java
-    ├── EndToEndTest.java
-    ├── LeaveTest.java
     ├── LoginTest.java
-    ├── PIMTest.java
-    └── TimeTest.java
+    ├── AdminTest.java
+    ├── EndToEndTest.java
+    └── ... (Module-specific tests)
 ```
 
----
+## Prerequisites
 
-## Key Features
+- **Java Development Kit (JDK):** version 11 or higher.
+- **Apache Maven:** version 3.6.0 or higher.
+- **Browsers:** Latest versions of Chrome, Firefox, or Microsoft Edge.
+- **IDE:** IntelliJ IDEA, Eclipse, or VS Code (with Java extensions).
 
-- **Cross-Browser Support:** Configured for Chrome and Firefox.
-- **Headless Execution:** Support for headless mode via BaseClass configuration for CI/CD environments.
-- **Modular Test Suites:** Organized XML suite files (testng.xml, testng-login.xml) for granular test execution.
-- **Implicit Waits:** Global wait management for stable execution.
-- **Clean Reports:** Integration with TestNG default reports for analysis.
+## Installation and Setup
 
----
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   ```
+2. Navigate to the project root:
+   ```bash
+   cd selenium_and_testNG
+   ```
+3. Install Maven dependencies:
+   ```bash
+   mvn clean install
+   ```
 
-## Getting Started
+## Configuration
 
-### Prerequisites
+### Browser Selection
+Browser selection is controlled via the `testng.xml` file. Update the `browser` parameter:
+```xml
+<parameter name="browser" value="chrome"/> <!-- Options: chrome, firefox, edge -->
+```
 
-1.  **JDK 11+** installed and configured in system PATH.
-2.  **Maven** installed and configured.
-3.  **Chrome/Firefox** browser installed.
-
-### Installation
-
-1.  Clone the repository:
-    ```bash
-    git clone <repository-url>
-    ```
-2.  Navigate to the project directory:
-    ```bash
-    cd selenium_and_testNG
-    ```
-3.  Install dependencies:
-    ```bash
-    mvn clean install
-    ```
-
----
+### Headless Mode
+To run tests without a visible browser window (ideal for servers), set the `headless` parameter to `true`:
+```xml
+<parameter name="headless" value="true"/>
+```
 
 ## Running Tests
 
-### Execute via Maven (Default Suite)
-To run all tests defined in the default testng.xml:
+### Via Maven
+Execute the entire suite defined in `testng.xml`:
 ```bash
 mvn test
 ```
 
-### Execute Specific Suite
-To run a specific XML configuration:
+### Via Batch File
+For quick execution on Windows environments, use the provided batch file:
 ```bash
-mvn test -DsuiteXmlFile=testng-login.xml
+run_tests.bat
 ```
 
-### Headless Mode
-To toggle headless mode, modify the headless boolean in src/test/java/base/BaseClass.java:
-```java
-boolean headless = true; // Set to true for headless, false for UI mode
-```
+### Via TestNG (IDE)
+Right-click on `testng.xml` and select **Run '...\testng.xml'**.
 
----
+## Reporting and Artifacts
 
-## Reporting
+### Extent Reports
+Professional HTML reports are generated after every execution in the `reports/` directory.
+- **Path:** `reports/AutomationReport_yyyyMMdd_HHmmss.html`
+- **Features:** Dashboard view, category filters, exception logs, and failure screenshots.
 
-After test execution, reports are automatically generated in the test-output/ directory:
-- **HTML Report:** test-output/index.html (Viewable in any browser)
-- **Emailable Report:** test-output/emailable-report.html
+### Screenshots
+Screenshots of failed test cases are stored in the `screenshots/` directory with a timestamp for traceability.
+- **Format:** `testMethodName_timestamp.png`
 
----
+### Test Data
+External test data is managed in `src/test/resources/TestData.xlsx`.
 
 ## Test Coverage
 
-| Module | Description |
+The suite covers the following modules of OrangeHRM:
+
+| Module | Test Coverage Highlights |
 | :--- | :--- |
-| **Login** | Validates successful login and error handling for invalid credentials. |
-| **Dashboard** | Verifies dashboard components and navigation. |
-| **Admin** | Automates administrative tasks like user management. |
-| **PIM** | Personnel Information Management - Employee records and search. |
-| **Leave** | Leave application and tracking workflows. |
-| **Time** | Time tracking and timesheet management. |
-| **End-to-End** | Comprehensive flows spanning multiple modules. |
+| **Login** | Credential validation, logout, and session management. |
+| **Admin** | User search, role management, and system configuration. |
+| **PIM** | Employee lifecycle: addition, search, and profile updates. |
+| **Leave** | Leave entitlement, request submission, and tracking. |
+| **Time** | Timesheet management and project activity tracking. |
+| **Recruitment** | Candidate management and vacancy tracking. |
+| **My Info** | Personal detail updates and document management. |
+| **Performance** | Key Performance Indicators (KPIs) and reviews. |
+| **Directory** | Corporate directory search and contact viewing. |
+| **Claim** | Expense claim submission and status monitoring. |
+| **Buzz** | Social feed interactions and status updates. |
+| **End-to-End** | Multi-module workflows simulating real-user journeys. |
 
----
+## Manual Testing Documentation
 
-## Author
-Created with precision to ensure high-quality automation standards.
+In addition to automation, the project includes structured manual testing artifacts (referenced in `Project plan.txt`):
+- Test Plan and Strategy
+- Test Scenarios and Cases
+- Requirements Traceability Matrix (RTM)
+- Defect Reports and Test Summary
